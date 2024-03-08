@@ -1,32 +1,31 @@
 function a() {
-	console.log('called');
+  console.log("called");
 }
 
 a();
 
-let b = function() {
-	console.log('called');
-}();
+let b = (function () {
+  console.log("called");
+})();
 
-let c = (function() {
+let c = (function () {
+  console.log("called");
 
-	console.log('called');
+  let privateVal = 0;
+  let publicVal = 10;
 
-	let privateVal = 0;
-	let publicVal = 10;
+  function privateFn() {
+    console.log("privateFn is called");
+  }
+  function publicFn() {
+    console.log("publicFn is called: " + privateVal++);
+  }
 
-	function privateFn() {
-		console.log('privateFn is called');
-	}
-	function publicFn() {
-		console.log('publicFn is called: ' + privateVal++);
-	}
-	
-	return {
-		publicVal,
-		publicFn
-	};
-})()
+  return {
+    publicVal,
+    publicFn,
+  };
+})();
 
 c.publicFn();
 c.publicFn();
