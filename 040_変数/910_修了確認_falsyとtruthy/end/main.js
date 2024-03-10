@@ -12,25 +12,25 @@
 // console.log('-1 == false', -1 == false);
 // console.log('!10 === false', !10 === false);
 
-
 /**
  * 問題２：
  * 関数fnの引数numが渡ってこない場合（undefinedまたはnullの場合）のみ、
  * 初期値として-1を設定したいものとします。
- * 
+ *
  * 以下の関数fnの初期化を適切に書き直してください。
  * ※aには0以上の整数値が渡ってくるものとします。
  */
 let a = 0;
 
 function fn(num = -1) {
-    if(num === undefined || num === null) {
-        num = -1;
-    }
-    console.log(num);
+  if (num === undefined || num === null) {
+    num = -1;
+  }
+  console.log(num);
 }
 fn(a);
 
+//→どっちかでいいんじゃないの？→if文にするのが正しいらしい。初期値はもしそれが未定義（undifined）の時にだけ設定されるらしい。falsyよりももっと厳しいんやな。nullとかはそのまま代入されてしまう
 
 /**
  * 問題３：
