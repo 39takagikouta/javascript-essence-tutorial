@@ -31,3 +31,58 @@ thisは呼び出し下のオブジェクトへの参照を保持する
 6bind
 bindメソッドを使えば、thisの中身と引数が固定される（新たに引数を設定してもこっちが優先される）
 三章がコピーされるが、新しい関数が作成され、メモリに配置される
+
+7call apply
+これらはbindと違って即時で関数が実行される
+前者は引数を一つずつ定義するが、後者は配列で定義する　
+使用例
+const arry = [1,2,3,4,5];
+
+// const result = Math.max.apply(null, arry);
+const result = Math.max(...arry);　→スプレッド演算子
+console.log(result);
+
+8アロー関数
+無名関数のES6の書き方
+引数が一つであれば、括弧もいらない
+処理が一行であれば、{}とreturnも省略可能　その一行がreturnじゃなくてもそのまま書けばいい
+無名関数との違い　thisやauguments、new,prototypeなどが使えない
+
+9アロー関数とthis
+thisは使えないため、レキシカルスコープのthisを探しに行ってそれを使う
+const person = {
+    name: 'Tom',
+    hello() {　　この部分はhello: function() {}なのだが、ES6からは左のように省略できる
+        console.log('Hello ' + this.name);
+        // const a = () => console.log('Bye ' + this.name);
+        // a();
+    }
+}
+
+二つ目の課題の4の回答
+JavaScriptでは、thisの値はその関数がどのように呼び出されるかによって決定されます。setTimeoutのコールバック関数内でthisを直接使用しようとすると、期待したオブジェクトではなく、グローバルオブジェクト（ブラウザではwindow、Node.jsではglobal）を指すことになり、this.helloのような呼び出しが期待通りに機能しなくなります。それぞれの方法に対する説明を以下に記載します。
+
+1. bindの使用
+javascript
+Copy code
+setTimeout(this.hello.bind(this, 'hello'), 1000);
+bindメソッドは、関数のthisを永続的にある値に束縛するために使用します。上の例では、this.hello.bind(this, 'hello')はhelloメソッドのthisをpersonオブジェクトに束縛し、最初の引数として'hello'を渡す新しい関数を生成します。これにより、setTimeout内部でthisが期待通りpersonオブジェクトを指すようになります。
+
+2. アロー関数
+javascript
+Copy code
+setTimeout(() => {
+    this.hello('hello');
+}, 1000);
+アロー関数はthisの値を自身が定義されたコンテキストのものを「固定」して保持します。これは、アロー関数が外側のスコープからthisの値を「キャプチャ」するためです。従って、アロー関数内のthisは、アロー関数を囲むスコープ（この場合はpersonオブジェクトのメソッド）でのthisと同じ値になります。アロー関数を使うことで、bindを使わずにthisを期待したオブジェクトに保つことができます。
+
+3. thisを一旦変数に代入
+javascript
+Copy code
+const _this = this;
+setTimeout(function () {
+  _this.hello("hello");
+}, 1000);
+この方法では、this（personオブジェクトを指す）をローカル変数（ここでは_this）に代入しています。その後、setTimeoutのコールバック関数内で、_thisを通じてhelloメソッドを呼び出します。この方法では、_thisがpersonオブジェクトを指し続けるため、期待通りに動作します。
+
+_thisという命名は、単なる慣習です。_thisの代わりに他の任意の変数名を使用することも可能ですが、thisの代替として使用されることが多いため、このような名前が選ばれます。これは、thisを直接使用することの混乱を避けるためのテクニックです。
