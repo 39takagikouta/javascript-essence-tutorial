@@ -35,3 +35,12 @@ UIイベント
 よぶ側じゃなくて、関数によばれる側の関数がコールバック関数なんやな
 使い方は動画を参照
 とにかくpromis以外（then,catch,finally）は全て非同期処理
+
+7promiseチェーン
+チェーンを作るためにはreturnでpromiseのインスタンスを返すことが重要
+また、then側でもreturnでpromiseの入った関数を実行し、promiseのインスタンスを返す
+promiseで連鎖させる
+
+promise.all
+配列にはプロミスで帰ってきたインスタンスが入る
+raceやallsettledもある
